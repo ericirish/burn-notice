@@ -5,29 +5,57 @@ export default class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.state.people = 2;
+		this.state.showControls = true;
+		this.state.showClock = false;
 
 		this.updatePeople = this.updatePeople.bind(this);
 		this.startTimer = this.startTimer.bind(this);
-
+		this.hideControls = this.hideControls.bind(this);
 	}
+
+	componentDidMount(){
+    this.nameInput.focus();
+  }
 
 	updatePeople(evt) {
 		console.log(evt);
 		this.setState({people: evt.target.value});
 	}
 
+	hideControls() {
+		console.log('setting state');
+		this.setState({
+			showControls: false,
+			showClock: true,
+		})
+
+		setTimeout(() => {this.startTimer()}, 1000);
+	}
+
 	startTimer() {
-		//const {people} = this.state;
-		var clock = new Clock(this.state.people);
+		let clock = new Clock(this.state.people);
 		clock.start();
 	}
+
+
 
 	render() {
 		return (
 			<div className="page page__home">
-				<input type="number" value={this.state.people} onChange={this.updatePeople}/>
-				<button onClick={this.startTimer}>Start</button>
-				<div id="clock"></div>
+				<div class={`controls-container ${this.state.showControls ? 'show':'hide'}`}>
+					<div class='controls'>
+						<input
+							ref={(input) => { this.nameInput = input; }}
+							value={this.state.people}
+							onChange={this.updatePeople}
+						/>
+						<span class="label">Participants</span>
+						<div class="button" onClick={this.hideControls}>Start</div>
+					</div>
+				</div>
+				<div class={`clock-container ${this.state.showClock ? 'show':'hide'}`}>
+					<div id="clock">00:00:00</div>
+				</div>
 			</div>
 		)
 	};

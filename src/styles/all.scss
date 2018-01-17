@@ -2,4 +2,67 @@
  * Main stylesheet
  */
 
-// '~' denotes npm module
+ body {
+	 margin: 0;
+ }
+
+.controls-container,
+.clock-container {
+	align-items: center;
+	display: flex;
+	height: 100vh;
+	justify-content: center;
+	opacity: 1;
+	position: absolute;
+	width: 100vw;
+	transition: opacity 1s;
+
+	&.hide {
+		opacity: 0;
+	}
+
+	&.show {
+		transition-delay: 1s;
+	}
+}
+
+.controls-container {
+	z-index: 100;
+}
+
+.controls {
+	display: flex;
+	flex-direction: column;
+}
+
+input {
+	border-color: transparent;
+	border-bottom: 10px solid black;
+	-webkit-appearance: none;
+	box-shadow: none !important;
+	outline: none;
+	width: 12rem;
+	font-size: 10rem;
+	text-align: center;
+}
+
+.label {
+	text-align: center;
+	font-size: 16px;
+	margin-top: 8px;
+}
+
+
+#clock {
+	font-size: 10rem;
+}
+
+.button {
+	color: white;
+	cursor: pointer;
+	background-color: #000;
+	border-radius: 24px;
+	padding: 12px;
+	text-align: center;
+	margin-top: 32px;
+}

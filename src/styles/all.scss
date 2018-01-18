@@ -1,10 +1,10 @@
 /**
- * Main stylesheet
- */
+* Main stylesheet
+*/
 
- body {
-	 margin: 0;
- }
+body {
+	margin: 0;
+}
 
 .controls-container,
 .clock-container {
@@ -14,8 +14,8 @@
 	justify-content: center;
 	opacity: 1;
 	position: absolute;
-	width: 100vw;
 	transition: opacity 1s;
+	width: 100vw;
 
 	&.hide {
 		opacity: 0;
@@ -30,39 +30,60 @@
 	z-index: 100;
 }
 
+.clock-container {
+	display: flex;
+	flex-direction: column;
+}
+
 .controls {
+	align-items: center;
 	display: flex;
 	flex-direction: column;
 }
 
 input {
-	border-color: transparent;
-	border-bottom: 10px solid black;
 	-webkit-appearance: none;
+	border-color: transparent;
 	box-shadow: none !important;
+	font-size: 6rem;
+	max-width: 30rem;
 	outline: none;
-	width: 12rem;
-	font-size: 10rem;
 	text-align: center;
+
+	@media only screen and (min-width: 640px) {
+		font-size: 10rem;
+	}
 }
 
 .label {
-	text-align: center;
 	font-size: 16px;
 	margin-top: 8px;
+	text-align: center;
+}
+
+hr {
+	border-bottom: 5px solid #000;
+	margin: 0 auto;
+	width: 10rem;
 }
 
 
-#clock {
-	font-size: 10rem;
+#clock,
+#money {
+	font-size: 6rem;
+
+	@media only screen and (min-width: 640px) {
+		font-size: 10rem;
+	}
 }
 
 .button {
-	color: white;
-	cursor: pointer;
 	background-color: #000;
 	border-radius: 24px;
+	color: white;
+	cursor: pointer;
+	margin-top: 32px;
 	padding: 12px;
 	text-align: center;
-	margin-top: 32px;
+	width: 10rem;
 }

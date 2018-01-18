@@ -5,10 +5,12 @@ export default class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.state.people = 2;
+		this.state.billrate = 15;
 		this.state.showControls = true;
 		this.state.showClock = false;
 
 		this.updatePeople = this.updatePeople.bind(this);
+		this.updateBillRate = this.updateBillRate.bind(this);
 		this.startTimer = this.startTimer.bind(this);
 		this.hideControls = this.hideControls.bind(this);
 	}
@@ -18,12 +20,14 @@ export default class Home extends Component {
   }
 
 	updatePeople(evt) {
-		console.log(evt);
 		this.setState({people: evt.target.value});
 	}
 
+	updateBillRate(evt) {
+		this.setState({billrate: evt.target.value});
+	}
+
 	hideControls() {
-		console.log('setting state');
 		this.setState({
 			showControls: false,
 			showClock: true,
@@ -34,10 +38,10 @@ export default class Home extends Component {
 
 	startTimer() {
 		let clock = new Clock(this.state.people);
+		let money = new Money(this.state.people, this.state.billrate);
 		clock.start();
+		money.start();
 	}
-
-
 
 	render() {
 		return (
@@ -49,30 +53,37 @@ export default class Home extends Component {
 							value={this.state.people}
 							onChange={this.updatePeople}
 						/>
+						<hr/>
 						<span class="label">Participants</span>
+						<input
+							value={this.state.billrate}
+							onChange={this.updateBillRate}
+						/>
+						<hr/>
+						<span class="label">Billrate ($)</span>
 						<div class="button" onClick={this.hideControls}>Start</div>
 					</div>
 				</div>
 				<div class={`clock-container ${this.state.showClock ? 'show':'hide'}`}>
 					<div id="clock">00:00:00</div>
+					<div id="money">$<span id='value'>0</span></div>
 				</div>
 			</div>
 		)
 	};
 }
 
-function Clock(people) {
-	var clock = this;
-	var timeout;
-	var time;
+function Money(people, billrate) {
+	let money = this;
+	let timeout;
+	let time;
 
-	this.hours = 0;
-	this.minutes = 0;
-	this.seconds = 0;
+	this.value = 0;
+	this.perSecond = parseFloat(((billrate * people) / 60) / 60);
 	this.stop = stop;
 	this.start = start;
 
-	var element = document.getElementById('clock');
+	let element = document.getElementById('value');
 
 	function stop() {
 		clearTimeout(timeout);
@@ -91,9 +102,48 @@ function Clock(people) {
 	}
 
 	function display() {
-		var hours = clock.hours;
-		var minutes = clock.minutes;
-		var seconds = clock.seconds;
+		let value = money.value;
+		element.innerHTML = (value).toFixed(0);
+	}
+
+	function update() {
+		let update = money.value += money.perSecond;
+	}
+}
+
+function Clock(people) {
+	let clock = this;
+	let timeout;
+	let time;
+
+	this.hours = 0;
+	this.minutes = 0;
+	this.seconds = 0;
+	this.stop = stop;
+	this.start = start;
+
+	let element = document.getElementById('clock');
+
+	function stop() {
+		clearTimeout(timeout);
+	}
+
+	function start() {
+		timeout = setTimeout(tick, 0);
+		time = Date.now();
+	}
+
+	function tick() {
+		time += (1000 / people);
+		timeout = setTimeout(tick, time - Date.now());
+		display();
+		update();
+	}
+
+	function display() {
+		let hours = clock.hours;
+		let minutes = clock.minutes;
+		let seconds = clock.seconds;
 
 		hours = hours < 10 ? "0" + hours : "" + hours;
 		minutes = minutes < 10 ? "0" + minutes : "" + minutes;
@@ -103,15 +153,15 @@ function Clock(people) {
 	}
 
 	function update() {
-		var seconds = clock.seconds += 1;
+		let seconds = clock.seconds += 1;
 
 		if (seconds === 60) {
 				clock.seconds = 0;
-				var minutes = ++clock.minutes;
+				let minutes = ++clock.minutes;
 
 				if (minutes === 60) {
 						clock.minutes = 0;
-						var hours = ++clock.hours;
+						let hours = ++clock.hours;
 
 						if (hours === 24) clock.hours = 0;
 				}

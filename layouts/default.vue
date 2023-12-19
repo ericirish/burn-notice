@@ -31,7 +31,6 @@ v-app
   //-         v-list-item-title Logout
   v-main
     NuxtPage
-  Footer
 </template>
 
 <script setup>

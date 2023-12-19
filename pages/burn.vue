@@ -1,6 +1,6 @@
 <template lang="pug">
-v-container
-  v-row.h-screen(
+v-container.h-screen
+  v-row.h-100(
     align="center"
     justify="center"
   )
@@ -12,10 +12,10 @@ v-container
 
       .d-flex.mt-8
         v-btn.mx-auto(
-          color="orange"
           icon="mdi-square"
           variant="outlined"
           size="small"
+          @click="stop()"
         )
 </template>
 
@@ -41,6 +41,10 @@ onUnmounted(() => {
 
 function formatNumber (number, pad = 3) {
   return number.toString().padStart(pad, '0')
+}
+
+function stop () {
+  navigateTo({ name: 'done', query: { people: query.people, rate: query.rate, seconds: timeSeconds.value } })
 }
 </script>
 
